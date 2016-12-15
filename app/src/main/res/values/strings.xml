@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">MyFood</string>
+
+    <!-- NAVIGATION DRAWER -->
+    <string name="drawer_close">Close</string>
+    <string name="drawer_open">Open</string>
+    <string name="options">Opções</string>
+    <string name="configuracoes">Configurações</string>
+    <!-- NAVIGATION ITEM-->
+    <string name="pratos_dia">Pratos do dia</string>
+    <string name="sair">Desconectar e Sair</string>
+
+    <!-- LOGIN ACTIVITY -->
+    <string name="login_buttons">Entre com o Facebook ou Google:</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="restaurantes_proximos">Restaurantes Próximos</string>
+
+</resources>

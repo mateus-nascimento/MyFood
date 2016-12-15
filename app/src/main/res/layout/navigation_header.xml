@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:background="#999999"
+    android:gravity="bottom"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/header_imagem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/header_nome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Brenda Santana"
+            android:textColor="@color/white"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/header_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="brenda@email.com"
+            android:textColor="@color/white"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</LinearLayout>

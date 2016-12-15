@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+<group
+    android:checkableBehavior="single">
+
+    <item
+        android:id="@+id/navigation_item_restaurantes"
+        android:icon="@drawable/ic_restaurantes_black"
+        android:title="@string/restaurantes_proximos"/>
+
+    <item
+        android:id="@+id/navigation_item_pratos_dia"
+        android:icon="@drawable/ic_pratos_black"
+        android:title="@string/pratos_dia"/>
+
+</group>
+
+    <item
+        android:title="@string/configuracoes">
+            <item
+                android:id="@+id/navigation_item_sair"
+                android:icon="@drawable/ic_sair_black"
+                android:title="@string/sair"/>
+    </item>
+
+b</menu>

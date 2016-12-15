@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1001958022472",
+    "firebase_url": "https://myfood-90260.firebaseio.com",
+    "project_id": "myfood-90260",
+    "storage_bucket": "myfood-90260.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1001958022472:android:77c7527b8aaff35e",
+        "android_client_info": {
+          "package_name": "ledare.com.br.myfood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1001958022472-ll64auh8jdnu81akuugiambolukg8d3r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnOVukyEcgiInsj6u6fXlu_gHzhFUTiFM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
