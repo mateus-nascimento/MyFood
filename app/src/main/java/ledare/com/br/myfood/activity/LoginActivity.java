@@ -61,9 +61,6 @@ public class LoginActivity extends BaseActivity {
 
         initFacebookLogin();
         initGoogleLogin();
-
-//        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-
     }
 
     @Override
@@ -81,12 +78,6 @@ public class LoginActivity extends BaseActivity {
                 toast("Falha no login com o Google");
             }
         }
-
-//        if (FacebookSdk.isFacebookRequestCode(requestCode)) {
-//            if (requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()) {
-//                mCallbackManager.onActivityResult(requestCode, resultCode, data);
-//            }
-//        }
 
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
@@ -203,10 +194,6 @@ public class LoginActivity extends BaseActivity {
                 .child("usuario")
                 .child(user.getUid())
                 .setValue(usuario);
-
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor ed = pref.edit();
-        ed.putBoolean(USER_LOGIN, true).apply();
 
         hideProgress();
 

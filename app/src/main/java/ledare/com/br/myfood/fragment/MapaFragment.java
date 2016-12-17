@@ -5,12 +5,16 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,7 +25,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import ledare.com.br.myfood.R;
-import ledare.com.br.myfood.util.Permissoes;
 
 public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
@@ -39,6 +42,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -48,7 +52,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         View layout = inflater.inflate(R.layout.fragment_mapa, container, false);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapFragment);
         //inicia o google maps dentro do fragment
-        mapFragment.getMapAsync(this);
+//        mapFragment.getMapAsync(this);
         return layout;
     }
 
@@ -57,7 +61,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         this.map = map;
 
         //botão para mostrar a localização
-        //map.setMyLocationEnabled(true);
+//        map.setMyLocationEnabled(true);
 
         Double latitude = -8.063171;
         Double longitude = -34.871143;
@@ -77,34 +81,4 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        for (int result : grantResults) {
-            if (result == PackageManager.PERMISSION_DENIED) {
-                // Alguma permissão foi negada, agora é com você :-)
-                alertAndFinish();
-                return;
-            }
-        }
-
-        // Se chegou aqui está OK :-)
-    }
-
-    private void alertAndFinish() {
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(R.string.app_name).setMessage("Para utilizar este aplicativo, você precisa aceitar as permissões.");
-            // Add the buttons
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    getActivity().finish();
-                }
-            });
-            android.support.v7.app.AlertDialog dialog = builder.create();
-            dialog.show();
-
-        }
-    }
 }
