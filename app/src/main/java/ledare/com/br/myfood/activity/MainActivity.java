@@ -3,18 +3,14 @@ package ledare.com.br.myfood.activity;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,16 +19,19 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.facebook.login.LoginManager;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseUser;
 
 
 import ledare.com.br.myfood.MyApplication;
 import ledare.com.br.myfood.R;
-import ledare.com.br.myfood.fragment.MapaFragment;
+import ledare.com.br.myfood.fragment.RestauranteFragment;
 import ledare.com.br.myfood.util.CircleTransform;
+import ledare.com.br.myfood.util.EasyPermission;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity
+    implements EasyPermission.OnPermissionResult{
 
     public static final String USER_LOGIN = "USER_LOGIN";
 
@@ -40,8 +39,10 @@ public class MainActivity extends BaseActivity {
     private ActionBarDrawerToggle mDrawerToggle;
 
     private Fragment fragment;
+    public EasyPermission easyPermission;
 
-    private static final int REQUEST_PERMISSIONS_CODE = 128;
+    private AlertDialog.Builder mAlert;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,8 @@ public class MainActivity extends BaseActivity {
             setupToolbar();
             getSupportActionBar().setTitle("MyFood");
             setupNavigation();
+            easyPermission = new EasyPermission();
+            easyPermission.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         }else{
             startActivity(new Intent(this, LoginActivity.class));
             finish();
@@ -77,7 +80,6 @@ public class MainActivity extends BaseActivity {
                     new NavigationView.OnNavigationItemSelectedListener() {
                         @Override
                         public boolean onNavigationItemSelected(MenuItem menuItem) {
-                            drawerLayout.closeDrawers();
                             onNavigationSelected(menuItem);
                             return true;
                         }
@@ -128,10 +130,11 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onNavigationSelected(MenuItem menuItem) {
-
+        drawerLayout.closeDrawers();
         switch (menuItem.getItemId()){
             case R.id.navigation_item_restaurantes:
-                verificarPermissao();
+                fragment = new RestauranteFragment().newInstance();
+                startFragment(fragment);
                 break;
             case R.id.navigation_item_sair:
                 logout();
@@ -139,53 +142,19 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void verificarPermissao() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
-                callDialog(new String[]{Manifest.permission.ACCESS_FINE_LOCATION});
-            }else{
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSIONS_CODE);
-            }
-        }else{
-            fragment = new MapaFragment().newInstance();
-            startFragment(fragment);
-        }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        easyPermission.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == REQUEST_PERMISSIONS_CODE){
-            if(permissions[0].equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION)
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                fragment = new MapaFragment().newInstance();
-                startFragment(fragment);
+    public void onPermissionResult(String permission, boolean isGranted) {
+        if(permission.equalsIgnoreCase(Manifest.permission.ACCESS_FINE_LOCATION)){
+            if(!isGranted){
+                callDialog();
             }
         }
-    }
-
-    private void callDialog(final String[] permissions) {
-        new AlertDialog.Builder(this)
-                .setTitle("Permissão")
-                .setMessage("Precisamos de sua localização para buscarmos os restaurantes.")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        ActivityCompat.requestPermissions(MainActivity.this,
-                                permissions,
-                                REQUEST_PERMISSIONS_CODE);
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create()
-                .show();
     }
 
     private int startFragment(Fragment fragment){
@@ -196,6 +165,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void logout() {
+        Log.d("TESTE", (MyApplication.getInstance().getAuth().getCurrentUser().getProviderId()));
         MyApplication.getInstance().getAuth().signOut();
         LoginManager.getInstance().logOut();
         startActivity(new Intent(this, LoginActivity.class));
@@ -205,4 +175,23 @@ public class MainActivity extends BaseActivity {
     private void toast(String mensagem){
         Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
     }
+
+    private void callDialog(){
+        mAlert = new AlertDialog.Builder(this);
+        mAlert.setTitle("Permissão");
+        mAlert.setMessage("Permita o acesso a localização para poder acessar o mapa.");
+        mAlert.setCancelable(false);
+        mAlert.setPositiveButton(
+                "Ok",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        easyPermission.requestPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
+                    }
+                });
+        AlertDialog aviso = mAlert.create();
+        aviso.show();
+
+    }
+
 }
