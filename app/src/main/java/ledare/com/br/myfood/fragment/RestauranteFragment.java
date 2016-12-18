@@ -1,14 +1,12 @@
 package ledare.com.br.myfood.fragment;
 
-import android.Manifest;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -26,13 +23,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import ledare.com.br.myfood.R;
-import ledare.com.br.myfood.util.EasyPermission;
 
 public class RestauranteFragment extends Fragment
         implements OnMapReadyCallback,
@@ -44,6 +38,8 @@ public class RestauranteFragment extends Fragment
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
+
+    private Snackbar mSnackBar;
 
     public static RestauranteFragment newInstance() {
         RestauranteFragment fragment = new RestauranteFragment();
@@ -70,6 +66,8 @@ public class RestauranteFragment extends Fragment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_restaurante, container, false);
+
+        mSnackBar= Snackbar.make(layout.getRootView(), "Para descobrir sua localização ative o GPS.", Snackbar.LENGTH_LONG);
 
         //Build the map
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
@@ -125,8 +123,9 @@ public class RestauranteFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         int item = menuItem.getItemId();
         if(item == R.id.item_localizacao){
-            Location l = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            //Pega a localização
 
+            Location l = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             //Atualiza a localização
             setMapLocation(l);
 
@@ -138,20 +137,18 @@ public class RestauranteFragment extends Fragment
     private void setMapLocation(Location l) {
         if(mMap != null && l != null){
             LatLng latLng = new LatLng(l.getLatitude(), l.getLongitude());
-            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng, 18);
+            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng, 16);
             mMap.animateCamera(update);
 
             //Desenha bolinha vermelha
             CircleOptions circle = new CircleOptions().center(latLng);
             circle.fillColor(Color.RED);
-            circle.radius(25);//em metros
+            circle.strokeColor(Color.BLUE);
+            circle.radius(5);//em metros
             mMap.clear();
             mMap.addCircle(circle);
-
-
-
-
-
+        }else{
+            mSnackBar.show();
         }
     }
 
