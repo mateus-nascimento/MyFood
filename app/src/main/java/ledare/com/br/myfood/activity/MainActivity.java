@@ -18,15 +18,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseUser;
 
 
 import ledare.com.br.myfood.MyApplication;
 import ledare.com.br.myfood.R;
-import ledare.com.br.myfood.fragment.RestauranteFragment;
+import ledare.com.br.myfood.fragment.MapaFragment;
 import ledare.com.br.myfood.util.CircleTransform;
 import ledare.com.br.myfood.util.EasyPermission;
 
@@ -132,11 +129,18 @@ public class MainActivity extends BaseActivity
     private void onNavigationSelected(MenuItem menuItem) {
         drawerLayout.closeDrawers();
         switch (menuItem.getItemId()){
-            case R.id.navigation_item_restaurantes:
-                fragment = new RestauranteFragment().newInstance();
+            case R.id.navigation_item_mapa:
+                toast("AAAAA");
+                fragment = new MapaFragment().newInstance();
                 startFragment(fragment);
                 break;
+            case R.id.navigation_item_restaurante:
+                toast("bbbbb");
+                startActivity(new Intent(this, RestauranteActivity.class));
+                finish();
+                break;
             case R.id.navigation_item_sair:
+                toast("CCCCC");
                 logout();
                 break;
         }
@@ -167,7 +171,7 @@ public class MainActivity extends BaseActivity
     private void logout() {
         Log.d("TESTE", (MyApplication.getInstance().getAuth().getCurrentUser().getProviderId()));
         MyApplication.getInstance().getAuth().signOut();
-        LoginManager.getInstance().logOut();
+//        LoginManager.getInstance().logOut();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

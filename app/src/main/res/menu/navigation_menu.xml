@@ -5,9 +5,14 @@
     android:checkableBehavior="single">
 
     <item
-        android:id="@+id/navigation_item_restaurantes"
-        android:icon="@drawable/ic_restaurantes_black"
-        android:title="@string/restaurantes_proximos"/>
+        android:id="@+id/navigation_item_mapa"
+        android:icon="@drawable/ic_mapa_black"
+        android:title="@string/mapa_restaurante"/>
+
+    <item
+        android:id="@+id/navigation_item_restaurante"
+        android:icon="@drawable/ic_restaurante_black"
+        android:title="@string/dados_restaurante"/>
 
 </group>
 

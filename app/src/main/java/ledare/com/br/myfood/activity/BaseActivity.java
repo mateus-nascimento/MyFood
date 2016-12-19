@@ -12,8 +12,6 @@ public class BaseActivity extends AppCompatActivity{
     protected Toolbar toolbar;
     private ProgressDialog mProgress;
 
-    EasyPermission easyPermission;
-
     protected void setupToolbar(){
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if(toolbar != null){

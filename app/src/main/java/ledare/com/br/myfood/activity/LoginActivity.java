@@ -184,6 +184,9 @@ public class LoginActivity extends BaseActivity {
 
     private void onAuthSucess(FirebaseUser user) {
 
+        String forma = MyApplication.getInstance().getAuth().getCurrentUser().getProviderId();
+        Log.e("DISPLAY", forma);
+
         Usuario usuario = new Usuario();
         usuario.id = user.getUid();
         usuario.nome = user.getDisplayName();

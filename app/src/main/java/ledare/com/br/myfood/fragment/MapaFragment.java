@@ -28,12 +28,12 @@ import com.google.android.gms.maps.model.LatLng;
 
 import ledare.com.br.myfood.R;
 
-public class RestauranteFragment extends Fragment
+public class MapaFragment extends Fragment
         implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
 
-    public static final String TAG = "RestauranteFragment";
+    public static final String TAG = "MapaFragment";
     public static final int DEFAULT_ZOOM = 13;
 
     private GoogleMap mMap;
@@ -41,12 +41,12 @@ public class RestauranteFragment extends Fragment
 
     private Snackbar mSnackBar;
 
-    public static RestauranteFragment newInstance() {
-        RestauranteFragment fragment = new RestauranteFragment();
+    public static MapaFragment newInstance() {
+        MapaFragment fragment = new MapaFragment();
         return fragment;
     }
 
-    public RestauranteFragment() {
+    public MapaFragment() {
         // Required empty public constructor
     }
 
@@ -65,7 +65,7 @@ public class RestauranteFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View layout = inflater.inflate(R.layout.fragment_restaurante, container, false);
+        View layout = inflater.inflate(R.layout.fragment_mapa, container, false);
 
         mSnackBar= Snackbar.make(layout.getRootView(), "Para descobrir sua localização ative o GPS.", Snackbar.LENGTH_LONG);
 
