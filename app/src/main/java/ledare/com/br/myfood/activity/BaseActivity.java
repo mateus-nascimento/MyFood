@@ -12,9 +12,10 @@ public class BaseActivity extends AppCompatActivity{
     protected Toolbar toolbar;
     private ProgressDialog mProgress;
 
-    protected void setupToolbar(){
+    protected void setupToolbar(String titulo){
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if(toolbar != null){
+            toolbar.setTitle(titulo);
             setSupportActionBar(toolbar);
         }
     }

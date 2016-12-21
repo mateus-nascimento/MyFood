@@ -35,8 +35,8 @@ public class RestauranteAdapter implements GoogleMap.InfoWindowAdapter{
         TextView txtNome = (TextView) popup.findViewById(R.id.map_nome);
         TextView txtDesc = (TextView) popup.findViewById(R.id.map_descricao);
 
-        txtNome.setText(marker.getTitle());
-        txtDesc.setText(marker.getSnippet());
+        txtNome.setText("Lola");
+        txtDesc.setText("E TINHÃO");
 
         return popup;
     }

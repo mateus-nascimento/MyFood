@@ -1,10 +1,12 @@
 package ledare.com.br.myfood.fragment;
 
+import android.graphics.Camera;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -25,8 +28,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import ledare.com.br.myfood.R;
+import ledare.com.br.myfood.adapter.RestauranteAdapter;
+import ledare.com.br.myfood.model.Restaurante;
 
 public class MapaFragment extends Fragment
         implements OnMapReadyCallback,
@@ -34,12 +40,12 @@ public class MapaFragment extends Fragment
         GoogleApiClient.OnConnectionFailedListener{
 
     public static final String TAG = "MapaFragment";
-    public static final int DEFAULT_ZOOM = 13;
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
 
     private Snackbar mSnackBar;
+    private FloatingActionButton mFloatButton;
 
     public static MapaFragment newInstance() {
         MapaFragment fragment = new MapaFragment();
@@ -67,6 +73,16 @@ public class MapaFragment extends Fragment
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_mapa, container, false);
 
+        mFloatButton = (FloatingActionButton) layout.findViewById(R.id.floatBuscar);
+        
+        mFloatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Buscando Restaurante", Toast.LENGTH_SHORT).show();
+                buscarRestaurantes();
+            }   
+        });
+        
         mSnackBar= Snackbar.make(layout.getRootView(), "Para descobrir sua localização ative o GPS.", Snackbar.LENGTH_LONG);
 
         //Build the map
@@ -79,10 +95,11 @@ public class MapaFragment extends Fragment
         return layout;
     }
 
+    @SuppressWarnings("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.setMyLocationEnabled(true);
     }
 
     @Override
@@ -99,17 +116,14 @@ public class MapaFragment extends Fragment
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.e("DISPLAY", "onConnected");
     }
 
     @Override
     public void onConnectionSuspended(int cause) {
-        Log.e("DISPLAY", "onConnectionSuspended");
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e("DISPLAY", "onConnectionFailed");
     }
 
     @Override
@@ -152,5 +166,14 @@ public class MapaFragment extends Fragment
         }
     }
 
+    private void buscarRestaurantes(){
+        LatLng latLng = new LatLng(-8.0640818, -34.8717028);
+        mMap.addMarker(new MarkerOptions()
+        .position(latLng)
+        .title("Rock & Ribs")
+        .snippet("Rooooooooooooock and Ribssssssssssss!"));
+
+//        mMap.setInfoWindowAdapter(new RestauranteAdapter());
+    }
 
 }

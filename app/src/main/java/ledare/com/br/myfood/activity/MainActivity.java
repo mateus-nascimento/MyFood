@@ -47,8 +47,7 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
 
         if(checkUser()){
-            setupToolbar();
-            getSupportActionBar().setTitle("MyFood");
+            setupToolbar("MyFood");
             setupNavigation();
             easyPermission = new EasyPermission();
             easyPermission.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -130,17 +129,13 @@ public class MainActivity extends BaseActivity
         drawerLayout.closeDrawers();
         switch (menuItem.getItemId()){
             case R.id.navigation_item_mapa:
-                toast("AAAAA");
                 fragment = new MapaFragment().newInstance();
                 startFragment(fragment);
                 break;
             case R.id.navigation_item_restaurante:
-                toast("bbbbb");
                 startActivity(new Intent(this, RestauranteActivity.class));
-                finish();
                 break;
             case R.id.navigation_item_sair:
-                toast("CCCCC");
                 logout();
                 break;
         }
@@ -183,7 +178,7 @@ public class MainActivity extends BaseActivity
     private void callDialog(){
         mAlert = new AlertDialog.Builder(this);
         mAlert.setTitle("Permissão");
-        mAlert.setMessage("Permita o acesso a localização para poder acessar o mapa.");
+        mAlert.setMessage("Permita a localização para visualizar os restaurantes mais próximos.");
         mAlert.setCancelable(false);
         mAlert.setPositiveButton(
                 "Ok",

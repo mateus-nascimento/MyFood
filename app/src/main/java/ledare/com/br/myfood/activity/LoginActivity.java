@@ -56,8 +56,7 @@ public class LoginActivity extends BaseActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
-        setupToolbar();
-        getSupportActionBar().setTitle("Bem Vindo");
+        setupToolbar("Bem Vindo");
 
         initFacebookLogin();
         initGoogleLogin();
@@ -183,9 +182,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void onAuthSucess(FirebaseUser user) {
-
-        String forma = MyApplication.getInstance().getAuth().getCurrentUser().getProviderId();
-        Log.e("DISPLAY", forma);
 
         Usuario usuario = new Usuario();
         usuario.id = user.getUid();
